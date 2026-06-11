@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title data-i18n="meta.title">SANAD — سند | Digital · Engineering · Design</title>
+  <meta name="description" data-i18n="meta.desc" content="SANAD — شركة رقمية وهندسية وتصميمية يمنية. نبني أفكارك… واقعًا.">
+  <meta name="theme-color" content="#0A1F44">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800&family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="css/styles.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollToPlugin.min.js" defer></script>
+</head>
+<body>
+
+<noscript><style>#loading-screen{display:none!important}</style></noscript>
+
+<!-- ============ LOADING SCREEN ============ -->
+<div id="loading-screen">
+  <div class="loader-logo">
+    <img src="images/logo.png" alt="SANAD" class="loader-img">
+    <div class="loader-text">
+      <span class="loader-ar">سند</span>
+      <span class="loader-en">SANAD</span>
+    </div>
+  </div>
+</div>
+
+<!-- ============ NAVBAR ============ -->
+<nav id="navbar">
+  <div class="container nav-container">
+    <a href="#" class="nav-logo">
+      <img src="images/logo.png" alt="SANAD" class="nav-logo-img">
+      <div class="logo-text">
+        <span class="logo-ar">سند</span>
+        <span class="logo-en">SANAD</span>
+      </div>
+    </a>
+
+    <ul class="nav-links" id="nav-links">
+      <li><a href="#services" class="nav-link" data-i18n="nav.services">الخدمات</a></li>
+      <li><a href="#portfolio" class="nav-link" data-i18n="nav.portfolio">الأعمال</a></li>
+      <li><a href="#about" class="nav-link" data-i18n="nav.about">من نحن</a></li>
+      <li><a href="#contact" class="nav-link" data-i18n="nav.contact">تواصل</a></li>
+      <li><a href="#" class="nav-cta modal-trigger" data-i18n="nav.cta">ابدأ مشروعك</a></li>
+    </ul>
+
+    <div class="nav-actions">
+      <button class="toggle-btn lang-btn" id="lang-toggle" aria-label="Toggle language">
+        <span class="lang-label">EN</span>
+      </button>
+      <button class="toggle-btn theme-btn" id="theme-toggle" aria-label="Toggle theme">
+        <i class="fas fa-moon"></i>
+      </button>
+      <button class="nav-toggle" id="nav-toggle" aria-label="القائمة">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<!-- ============ HERO ============ -->
+<section id="hero" class="hero">
+  <canvas id="particles-canvas"></canvas>
+  <div class="hero-overlay"></div>
+  <div class="container hero-content">
+    <div class="hero-badge">Digital · Engineering · Design</div>
+    <h1 class="hero-title" data-i18n="hero.title">حيث يلتقي الكود بالبناء</h1>
+    <p class="hero-subtitle" data-i18n="hero.subtitle">Where Code Meets Architecture</p>
+    <p class="hero-desc" data-i18n="hero.desc">
+      نحن في <strong>سند</strong> نجمع بين الخبرة الهندسية والتقنية الرقمية
+      لنحوّل أفكارك إلى مشاريع متكاملة — من التصميم إلى التنفيذ.
+    </p>
+    <div class="hero-buttons">
+      <a href="#services" class="btn btn-primary" data-i18n="hero.btn1">اكتشف خدماتنا</a>
+      <a href="#contact" class="btn btn-outline" data-i18n="hero.btn2">تواصل معنا</a>
+    </div>
+  </div>
+  <div class="hero-stats" id="hero-stats"></div>
+</section>
+
+<!-- ============ SERVICES ============ -->
+<section id="services" class="section services-section section-white">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-subtitle" data-i18n="services.subtitle">Our Services</span>
+      <h2 class="section-title" data-i18n="services.title">خدماتنا</h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="services-grid" id="services-grid"></div>
+  </div>
+</section>
+
+<!-- ============ WHY SANAD ============ -->
+<section id="about" class="section why-section section-dark">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-subtitle" data-i18n="why.subtitle">Why SANAD</span>
+      <h2 class="section-title" data-i18n="why.title">لماذا SANAD؟</h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="why-grid" id="why-grid"></div>
+  </div>
+</section>
+
+<!-- ============ PROCESS ============ -->
+<section class="section process-section section-alt">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-subtitle" data-i18n="process.subtitle">Our Process</span>
+      <h2 class="section-title" data-i18n="process.title">كيف نعمل</h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="process-timeline" id="process-timeline">
+      <div class="process-line"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PORTFOLIO ============ -->
+<section id="portfolio" class="section portfolio-section section-white">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-subtitle" data-i18n="portfolio.subtitle">Our Work</span>
+      <h2 class="section-title" data-i18n="portfolio.title">أحدث أعمالنا</h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="portfolio-filters" id="portfolio-filters"></div>
+    <div class="portfolio-grid" id="portfolio-grid"></div>
+    <div class="portfolio-cta">
+      <a href="#contact" class="btn btn-primary" data-i18n="portfolio.cta">عرض جميع الأعمال</a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ TESTIMONIALS ============ -->
+<section class="section testimonials-section section-dark">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-subtitle" data-i18n="testimonials.subtitle">Testimonials</span>
+      <h2 class="section-title" data-i18n="testimonials.title">قالوا عنا</h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="testimonials-grid" id="testimonials-grid"></div>
+  </div>
+</section>
+
+<!-- ============ CTA ============ -->
+<section class="section cta-banner section-blue">
+  <div class="container cta-content">
+    <h2 class="cta-title" data-i18n="cta.title">جاهز لتحويل فكرتك إلى واقع؟</h2>
+    <p class="cta-subtitle" data-i18n="cta.subtitle">فريق SANAD في انتظارك</p>
+    <a href="#" class="btn btn-cta modal-trigger" data-i18n="cta.btn">ابدأ الآن</a>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer id="contact" class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-col footer-brand">
+        <div class="footer-logo">
+          <img src="images/logo.png" alt="SANAD" class="footer-logo-img">
+          <span class="footer-logo-text">سند</span>
+        </div>
+        <p class="footer-slogan" data-i18n="footer.slogan">نبني أفكارك… واقعًا</p>
+        <p class="footer-slogan-en">We Build Your Ideas Into Reality</p>
+      </div>
+      <div class="footer-col">
+        <h4 class="footer-title" data-i18n="footer.col1.title">الشركة</h4>
+        <ul class="footer-links">
+          <li><a href="#about" data-i18n="footer.col1.link1">من نحن</a></li>
+          <li><a href="#services" data-i18n="footer.col1.link2">خدماتنا</a></li>
+          <li><a href="#portfolio" data-i18n="footer.col1.link3">أعمالنا</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4 class="footer-title" data-i18n="footer.col2.title">الخدمات</h4>
+        <ul class="footer-links" id="footer-services"></ul>
+      </div>
+      <div class="footer-col">
+        <h4 class="footer-title" data-i18n="footer.col3.title">التواصل</h4>
+        <ul class="footer-contact">
+          <li><i class="fas fa-phone"></i> <a href="tel:+967774561368">+967 774 561 368</a></li>
+          <li><i class="fas fa-phone"></i> <a href="tel:+967779833023">+967 779 833 023</a></li>
+          <li><i class="fas fa-phone"></i> <a href="tel:+967776038766">+967 776 038 766</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4 class="footer-title" data-i18n="footer.col4.title">متابعة</h4>
+        <div class="footer-social">
+          <a href="#" class="social-link" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+          <a href="#" class="social-link" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+          <a href="#" class="social-link" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p data-i18n="footer.copyright">&copy; 2025 SANAD · جميع الحقوق محفوظة</p>
+    </div>
+  </div>
+</footer>
+
+<!-- ============ SERVICE MODAL ============ -->
+<div id="service-modal" class="service-modal" aria-hidden="true">
+  <div class="modal-overlay" id="modal-overlay"></div>
+  <div class="modal-container" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <button class="modal-close" id="modal-close" aria-label="Close">&times;</button>
+    <div class="modal-header">
+      <h2 class="modal-title" id="modal-title" data-i18n="modal.title">اختر الخدمة المناسبة</h2>
+      <p class="modal-subtitle" data-i18n="modal.subtitle">اختر الخدمة التي تريدها وسنرسل طلبك عبر واتساب</p>
+    </div>
+    <div class="modal-body" id="modal-body">
+      <div class="modal-step" id="modal-step-list">
+        <div class="modal-services" id="modal-services"></div>
+      </div>
+      <div class="modal-step" id="modal-step-detail" style="display:none">
+        <button class="modal-back" id="modal-back"><i class="fas fa-arrow-right"></i> <span data-i18n="modal.back">رجوع</span></button>
+        <div class="modal-detail-box">
+          <span class="modal-detail-badge" id="modal-detail-badge"></span>
+          <h3 class="modal-detail-title" id="modal-detail-title"></h3>
+          <ul class="modal-detail-list" id="modal-detail-list"></ul>
+          <a class="btn btn-whatsapp" id="modal-whatsapp-btn" target="_blank" rel="noopener">
+            <i class="fab fa-whatsapp"></i>
+            <span data-i18n="modal.send">أرسل عبر واتساب</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="js/main.js" defer></script>
+</body>
+</html>
