@@ -2,11 +2,20 @@
   'use strict';
 
   /* ==========================================
-     SANAD AI Chatbot
-     جاهز لـ OpenAI API — حالياً بردود مسبقة
+     SANAD AI Chatbot — Google Gemini
+     مجاني — املأ المفتاح من الرابط: https://aistudio.google.com/apikey
      ========================================== */
 
+  /* ✍️ ضع مفتاح Gemini هنا مجاناً */
+  const GEMINI_API_KEY = '';
+
+  /* لا تغير شيئاً أسفل هذا السطر */
+  const GEMINI_MODEL = 'gemini-2.0-flash';
+  const GEMINI_URL = 'https://generativelanguage.googleapis.com/v1beta/models/' + GEMINI_MODEL + ':generateContent?key=' + GEMINI_API_KEY;
+
   const WHATSAPP_NUMBER = '967774561368';
+
+  const SYSTEM_PROMPT = 'أنت مساعد SANAD الرسمي. شركة سند يمنية رقمية هندسية تصميمية. خدماتنا: SANAD TECH (تطوير مواقع ومتاجر وأنظمة), SANAD DESIGN (هويات بصرية وتصاميم), SANAD MEDIA (تصوير ومونتاج), SANAD ARCH (هندسة معمارية وديكور), SANAD ENG (هندسة إنشائية), SANAD MOBILE (تطبيقات جوال), الحزمة المتكاملة. للتواصل: +967774561368. اليمن. أجب بلغة المستخدم. كن مفيداً ومختصراً.';
 
   const BOT_REPLIES = {
     ar: {
@@ -113,91 +122,98 @@
     }).join('\n');
   }
 
-  function handleChatMessage(input) {
+  function getPredefinedReply(input) {
     var lang = getLang();
     var text = input.trim().toLowerCase();
     var replies = BOT_REPLIES[lang];
     var details = SERVICE_DETAILS[lang];
 
-    // Check for service number
     var num = parseInt(text);
     if (num >= 1 && num <= 7) {
       var keys = ['tech', 'design', 'media', 'arch', 'eng', 'mobile', 'full'];
       return details[keys[num - 1]];
     }
 
-    // Greetings
     if (/^(مرحب|السلام|hello|hi|مرحبا|اهل)/.test(text)) {
       return pickRandom(replies.greetings);
     }
 
-    // Services
     if (/(خدمات|خدمة|services|offer)/.test(text) && !/(سعر|price|كم)/.test(text)) {
       return getServicesText(lang) + '\n\n' + (lang === 'ar' ? 'اختر رقم الخدمة للمزيد' : 'Choose a service number for details');
     }
 
-    // Contact
     if (/(تواصل|اتصال|رقم|هاتف|جوال|phone|contact|call)/.test(text)) {
       return replies.contact;
     }
 
-    // WhatsApp
     if (/(واتس|whatsapp|wa)/.test(text)) {
       return replies.contact;
     }
 
-    // Project / Start
     if (/(مشروع|ابدأ|project|start|طلب|request)/.test(text)) {
       return replies.project;
     }
 
-    // Pricing
     if (/(سعر|كم|تكلفة|price|cost|pricing)/.test(text)) {
       return replies.price;
     }
 
-    // Location
     if (/(موقع|مكان|عنوان|location|where|address)/.test(text)) {
       return replies.location;
     }
 
-    // Hours
     if (/(دوام|ساعات|وقت|hours|time|مواعيد)/.test(text)) {
       return replies.hours;
     }
 
-    // Thanks
     if (/(شكر|thanks|thank|ok|تمام)/.test(text)) {
       return replies.thanks;
     }
 
-    // Unknown
+    return null;
+  }
+
+  async function queryGemini(input) {
+    if (!GEMINI_API_KEY) return null;
+    try {
+      var lang = getLang();
+      var res = await fetch(GEMINI_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          contents: [{
+            parts: [{ text: SYSTEM_PROMPT + '\n\nالمستخدم: ' + input + '\n\nالمساعد:' }]
+          }]
+        })
+      });
+      var data = await res.json();
+      if (data.candidates && data.candidates[0] && data.candidates[0].content) {
+        return data.candidates[0].content.parts[0].text.trim();
+      }
+      return null;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  async function handleChatMessage(input) {
+    var lang = getLang();
+    var replies = BOT_REPLIES[lang];
+
+    // Try Gemini first if API key is set
+    if (GEMINI_API_KEY) {
+      var geminiReply = await queryGemini(input);
+      if (geminiReply) return geminiReply;
+    }
+
+    // Fallback to predefined reply
+    var predefined = getPredefinedReply(input);
+    if (predefined) return predefined;
+
     return replies.unknown + '\n\n' + (lang === 'ar'
       ? 'يمكنك اختيار:\n1️⃣ الخدمات\n2️⃣ التواصل\n3️⃣ أبدأ مشروع\n4️⃣ الأسعار'
       : 'You can choose:\n1️⃣ Services\n2️⃣ Contact\n3️⃣ Start Project\n4️⃣ Pricing');
   }
-
-  /* === OpenAI READY ===
-     لتفعيل OpenAI، عدّل الدالة التالية:
-     async function handleChatMessage(input) {
-       const response = await fetch('https://api.openai.com/v1/chat/completions', {
-         method: 'POST',
-         headers: {
-           'Content-Type': 'application/json',
-           'Authorization': 'Bearer YOUR_API_KEY_HERE'
-         },
-         body: JSON.stringify({
-           model: 'gpt-3.5-turbo',
-           messages: [
-             { role: 'system', content: 'You are SANAD assistant...' },
-             { role: 'user', content: input }
-           ]
-         })
-       });
-       const data = await response.json();
-       return data.choices[0].message.content;
-     }
-  */
 
   /* ==========================================
      UI
@@ -348,13 +364,13 @@
       scrollToBottom();
     }
 
-    setTimeout(function () {
+    setTimeout(async function () {
       var typingEl = document.getElementById('chatbot-typing');
       if (typingEl) typingEl.remove();
 
-      var reply = handleChatMessage(text);
+      var reply = await handleChatMessage(text);
       showBotReply(reply);
-    }, 600 + Math.random() * 400);
+    }, GEMINI_API_KEY ? 200 : 600 + Math.random() * 400);
   }
 
   function initEvents() {
